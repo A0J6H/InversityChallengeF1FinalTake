@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InversityF1.JsonObjs
 {
-    internal class Sessions
+    public class Sessions
     {
         public int circuit_key { get; set; }
         public string circuit_short_name { get; set; }
