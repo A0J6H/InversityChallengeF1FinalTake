@@ -36,7 +36,7 @@ namespace InversityChallenge
 
         List<Panel> DashPanels = new List<Panel>();
         List<C1.Win.Chart.FlexChart> FlexCharts = new List<C1.Win.Chart.FlexChart>();
-        List<List<int>> Selected_Drivers = new List<List<int>>();
+        List<List<string>> Selected_Drivers = new List<List<string>>();
 
         string Selected_Session_Key;
 
@@ -54,21 +54,40 @@ namespace InversityChallenge
             }
         }
 
-        static List<laptimes> Lap_Time_Chart(List<List<Laps>> Laps, int current_lap)
+        static List<List<laptimes>> Lap_Time_Chart(List<List<Laps>> Laps, int current_lap,List<string> Driver_selection)
         {
-            List<laptimes> Lap_Time = new List<laptimes>();
-            for (int i = 0; i < current_lap; i++)
+            
+            List<List<laptimes>> Lap_Times = new List<List<laptimes>>();
+            List<Laps> Temp_Lap = new List<Laps>();
+            for (int d = 0; d < Driver_selection.Count; d++)
             {
-                if (Laps[0][i].lap_duration == null || Laps[0][i].is_pit_out_lap == true)
+                List<laptimes> Lap_Time = new List<laptimes>();
+                for (int l = 0; l < Laps.Count(); l++)
                 {
+                    try
+                    {
+                        if (Laps[l][0].driver_number.ToString() == Driver_selection[d].ToString())
+                        {
+                            Temp_Lap = Laps[l];
+                        }
+                    }
+                    catch { }
+                    
+                }
+                for (int i = 0; i < current_lap; i++)
+                {
+                    if (Temp_Lap[i].lap_duration == null || Temp_Lap[i].is_pit_out_lap == true)
+                    {
 
+                    }
+                    else
+                    {
+                        Lap_Time.Add(new laptimes(Temp_Lap[i].driver_number.ToString(), Temp_Lap[i].lap_number, double.Parse(Temp_Lap[i].lap_duration.ToString())) { });
+                    }
                 }
-                else
-                {
-                    Lap_Time.Add(new laptimes(Laps[0][i].driver_number.ToString(), Laps[0][i].lap_number, double.Parse(Laps[0][i].lap_duration.ToString())) { });
-                }
+                Lap_Times.Add(Lap_Time);
             }
-            return Lap_Time;
+            return Lap_Times;
         }
 
         private Color Sector_Color(List<string> Colors)
@@ -251,7 +270,40 @@ namespace InversityChallenge
             Panel panel = button.Parent as Panel;
             Settings_Panel.Location = new Point(panel.Width - 131, 5);
             Settings_Panel.Visible = true;
+            Select_Drivers_Panel.Location = new Point(panel.Width - Settings_Panel.Width - 143 - 35, 5);
+            Select_Drivers_Panel.Visible = false;
+            
             panel.Controls.Add(Settings_Panel);
+            panel.Controls.Add(Select_Drivers_Panel);
+            Select_Drivers_Panel.BringToFront();
+            Settings_Panel.BringToFront();
+            MessageBox.Show($"{panel.Name} {Selected_Drivers[int.Parse(panel.Name)].Count()}");
+
+
+            for (int i = 0; i < Driver_Panel.Controls.Count; i++)
+            {
+                if (Selected_Drivers[int.Parse(panel.Name)].Count() == 0)
+                {
+                    Driver_Panel.Controls[i].Controls[1].BackColor = Color.Red;
+                }
+                else
+                {
+                    bool Found = false;
+                    for (int j = 0; j < Selected_Drivers[int.Parse(panel.Name)].Count(); j++)
+                    {
+                        if (Driver_Panel.Controls[i].Controls[1].Name == Selected_Drivers[int.Parse(panel.Name)][j])
+                        {
+                            Driver_Panel.Controls[i].Controls[1].BackColor = Color.Green;
+                            Found = true;
+                        }
+                        else if (Found == false)
+                        {
+                            Driver_Panel.Controls[i].Controls[1].BackColor = Color.Red;
+                        }
+                    }
+                }
+
+            }
         }
 
         private void Add_Chart_Click(object? sender, EventArgs e)
@@ -269,8 +321,8 @@ namespace InversityChallenge
             DashP.Controls.Clear();
             DashPanels.Clear();
             FlexCharts.Clear();
+            Selected_Drivers.Clear();
             List<Point> Points = new List<Point>() { };
-
             int Panel_Height = DashP.Height;
             int Panel_Width = DashP.Width;
 
@@ -283,6 +335,8 @@ namespace InversityChallenge
                     Points.Add(new Point(Panel_Width / 2, Panel_Height / 2));
                     for (int i = 0; i < 4; i++)
                     {
+
+                        List<string> Panels = new List<string>();
                         Panel panel = new Panel();
                         panel.Name = i.ToString();
                         panel.Width = Panel_Width / 2;
@@ -293,6 +347,7 @@ namespace InversityChallenge
                         panel.Controls.Add(Add_Chart_Buttons());
                         panel.Controls.Add(Add_Settings_Buttons(Panel_Width / 2));
                         DashP.Controls.Add(panel);
+                        Selected_Drivers.Add(Panels);
                     }
                     break;
                 case "2":
@@ -301,6 +356,8 @@ namespace InversityChallenge
                     Points.Add(new Point(0, Panel_Height / 2));
                     for (int i = 0; i < 3; i++)
                     {
+
+                        List<string> Panels = new List<string>();
                         int Width = 0;
                         Panel panel = new Panel();
                         panel.Name = i.ToString();
@@ -313,6 +370,7 @@ namespace InversityChallenge
                         panel.Controls.Add(Add_Chart_Buttons());
                         panel.Controls.Add(Add_Settings_Buttons(Width));
                         DashP.Controls.Add(panel);
+                        Selected_Drivers.Add(Panels);
                     }
                     break;
                 case "3":
@@ -321,6 +379,8 @@ namespace InversityChallenge
                     Points.Add(new Point(Panel_Width / 2, Panel_Height / 2));
                     for (int i = 0; i < 3; i++)
                     {
+
+                        List<string> Panels = new List<string>();
                         int Width = 0;
                         Panel panel = new Panel();
                         panel.Name = i.ToString();
@@ -333,6 +393,7 @@ namespace InversityChallenge
                         panel.Controls.Add(Add_Chart_Buttons());
                         panel.Controls.Add(Add_Settings_Buttons(Width));
                         DashP.Controls.Add(panel);
+                        Selected_Drivers.Add(Panels);
                     }
                     break;
                 case "4":
@@ -340,6 +401,8 @@ namespace InversityChallenge
                     Points.Add(new Point(0, Panel_Height / 2));
                     for (int i = 0; i < 2; i++)
                     {
+
+                        List<string> Panels = new List<string>();
                         Panel panel = new Panel();
                         panel.Name = i.ToString();
                         panel.Width = Panel_Width;
@@ -350,6 +413,7 @@ namespace InversityChallenge
                         panel.Controls.Add(Add_Chart_Buttons());
                         panel.Controls.Add(Add_Settings_Buttons(Panel_Width));
                         DashP.Controls.Add(panel);
+                        Selected_Drivers.Add(Panels);
                     }
                     break;
 
@@ -574,6 +638,53 @@ namespace InversityChallenge
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
 
+        private Panel Add_Driver_Panel(string Driver_Number)
+        {
+            Panel panel = new Panel();
+            panel.Size = new Size(120, 30);
+            Select_Drivers_Panel.Controls.Add(panel);
+            return panel;
+        }
+        private Label Add_Driver_Label(string Driver_Name)
+        {
+            Label label = new Label();
+            string fullName = Driver_Name;
+            string[] parts = fullName.Split(' ');
+            string lastName = parts[parts.Length - 1];
+            label.Text = lastName;
+            label.Location = new Point(0, 10);
+            return label;
+        }
+
+        private Button Add_Driver_Button(string Driver_Number)
+        {
+            Button Add_Driver = new Button();
+            Add_Driver.Name = Driver_Number;
+            Add_Driver.Size = new Size(15, 15);
+            Add_Driver.Location = new Point(100, 10);
+            Add_Driver.BackColor = Color.Red;
+            Add_Driver.FlatStyle = FlatStyle.Flat;
+            Add_Driver.Click += Add_Driver_Click;
+            return Add_Driver;
+        }
+
+        private void Add_Driver_Click(object? sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            Panel panel = button.Parent.Parent.Parent.Parent as Panel;
+            if (button.BackColor == Color.Red)
+            {
+                button.BackColor = Color.Green;
+                Selected_Drivers[int.Parse(panel.Name)].Add(button.Name);
+            }
+            else
+            {
+                button.BackColor = Color.Red;
+                Selected_Drivers[int.Parse(panel.Name)].RemoveAll(Driver_Number => Driver_Number == button.Name);
+                //numbers.RemoveAll(x => x == 10);
+            }
+        }
+
         private async void Race_Start_Click(object sender, EventArgs e)
         {
             Race_Start.Enabled = false;
@@ -599,9 +710,12 @@ namespace InversityChallenge
             }
             Race_Timer.Start();
             Current_Lap = 0;
-            foreach (Drivers Driver in Drivers)
+            for (int i = 0; i < Drivers.Count; i++)
             {
-                Selected_Drivers_Check.Items.Add(string.Join("", Driver));
+                Panel panel = Add_Driver_Panel(Drivers[i].driver_number.ToString());
+                panel.Controls.Add(Add_Driver_Label(Drivers[i].full_name));
+                panel.Controls.Add(Add_Driver_Button(Drivers[i].driver_number.ToString()));
+                Driver_Panel.Controls.Add(panel);
             }
         }
 
@@ -650,28 +764,49 @@ namespace InversityChallenge
             //}
             Update_LeaderBoard(Current_LapInfo);
 
-            FlexCharts[0].DataSource = Lap_Time_Chart(Laps, Current_Lap);
-
-            FlexCharts[0].Series.Clear();
-
-            //Selecting chart's type 
-            this.FlexCharts[0].ChartType = C1.Chart.ChartType.LineSymbols;
-
-            //Setting chart's Header and styling it
-            this.FlexCharts[0].Header.Content = "DateWise Revenue";
-
-            //Adding a Series to chart and binding it (AxisY) to 'Revenue' field of DataCollection
-            this.FlexCharts[0].Series.Add(new C1.Win.Chart.Series
+            if(FlexCharts.Count() == 0)
             {
-                //Name property specifies the string to be displayed corresponding to this Series in Legend
-                Name = "LapTimes",
-                Binding = "laptime"
-            });
+
+            }
+            else
+            {
+                for (int i = 0; i < FlexCharts.Count; i++)
+                {
+                    FlexCharts[i].Series.Clear();
+
+                    //Selecting chart's type 
+                    this.FlexCharts[i].ChartType = C1.Chart.ChartType.LineSymbols;
+
+                    //Setting chart's Header and styling it
+                    this.FlexCharts[i].Header.Content = "Lap Times";
+
+                    //Adding a Series to chart and binding it (AxisY) to 'Revenue' field of DataCollection
+                    for (int j =0; j < Lap_Time_Chart(Laps, Current_Lap, Selected_Drivers[i]).Count(); j++)
+                    {
+                        C1.Win.Chart.Series series = new C1.Win.Chart.Series();
+                        series.DataSource = Lap_Time_Chart(Laps, Current_Lap, Selected_Drivers[i])[j];
+                        series.Name = $"{Lap_Time_Chart(Laps, Current_Lap, Selected_Drivers[i])[j][0].drivernumber}";
+                        series.Binding = "laptime";
+                        series.ChartType = C1.Chart.ChartType.LineSymbols;
+                        FlexCharts[i].Series.Add(series);
+                    }
+                    
+                    //this.FlexCharts[i].Series.Add(new C1.Win.Chart.Series
+                    //{
+                        //Name property specifies the string to be displayed corresponding to this Series in Legend
+                    //    Name = "LapTimes",
+                    //    Binding = "laptime"
+                    //});
+                    
 
 
 
-            //Binding chart's AxisX to 'Date' so Dates are shown in Horizontal axis
-            this.FlexCharts[0].BindingX = "lapnumber";
+                    //Binding chart's AxisX to 'Date' so Dates are shown in Horizontal axis
+                    this.FlexCharts[i].BindingX = "lapnumber";
+                }
+                
+            }
+
 
 
             if (Current_Lap >= Total_Laps)
@@ -728,12 +863,12 @@ namespace InversityChallenge
 
         private void Driver_Select_Click(object sender, EventArgs e)
         {
-
+            Select_Drivers_Panel.Visible = true;
         }
 
-        private void Selected_Drivers_Check_SelectedIndexChanged(object sender, EventArgs e)
+        private void Select_Drivers_Panel_Close_Click(object sender, EventArgs e)
         {
-
+            Select_Drivers_Panel.Visible = false;
         }
     }
 }

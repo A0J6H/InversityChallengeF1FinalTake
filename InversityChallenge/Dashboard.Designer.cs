@@ -35,7 +35,6 @@
             Test_Panel = new Panel();
             Choose_Graph = new Button();
             DashP = new Panel();
-            Selected_Drivers_Check = new CheckedListBox();
             Session_Select = new ComboBox();
             Race_Timer = new System.Windows.Forms.Timer(components);
             Race_Start = new Button();
@@ -58,12 +57,12 @@
             Driver_Select = new Button();
             Close_Settings = new Button();
             button3 = new Button();
-            panel1 = new Panel();
-            button2 = new Button();
-            radioButton1 = new RadioButton();
+            Select_Drivers_Panel = new Panel();
+            Driver_Label = new Label();
+            Driver_Panel = new FlowLayoutPanel();
+            Select_Drivers_Panel_Close = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             Test_Panel.SuspendLayout();
-            DashP.SuspendLayout();
             Graph_Panel.SuspendLayout();
             Layout_Picker.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Layout2).BeginInit();
@@ -71,7 +70,7 @@
             ((System.ComponentModel.ISupportInitialize)Layout4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Layout1).BeginInit();
             Settings_Panel.SuspendLayout();
-            panel1.SuspendLayout();
+            Select_Drivers_Panel.SuspendLayout();
             SuspendLayout();
             // 
             // Race_Select
@@ -132,21 +131,11 @@
             // 
             // DashP
             // 
-            DashP.Controls.Add(Selected_Drivers_Check);
             DashP.Location = new Point(396, 116);
             DashP.Margin = new Padding(3, 2, 3, 2);
             DashP.Name = "DashP";
             DashP.Size = new Size(1256, 600);
             DashP.TabIndex = 4;
-            // 
-            // Selected_Drivers_Check
-            // 
-            Selected_Drivers_Check.FormattingEnabled = true;
-            Selected_Drivers_Check.Location = new Point(272, 74);
-            Selected_Drivers_Check.Name = "Selected_Drivers_Check";
-            Selected_Drivers_Check.Size = new Size(471, 400);
-            Selected_Drivers_Check.TabIndex = 17;
-            Selected_Drivers_Check.SelectedIndexChanged += Selected_Drivers_Check_SelectedIndexChanged;
             // 
             // Session_Select
             // 
@@ -327,6 +316,7 @@
             // 
             // Resume
             // 
+            Resume.Enabled = false;
             Resume.Location = new Point(223, 93);
             Resume.Margin = new Padding(3, 2, 3, 2);
             Resume.Name = "Resume";
@@ -338,6 +328,7 @@
             // 
             // Pause
             // 
+            Pause.Enabled = false;
             Pause.Location = new Point(256, 93);
             Pause.Margin = new Padding(3, 2, 3, 2);
             Pause.Name = "Pause";
@@ -391,37 +382,47 @@
             button3.Text = "DataPoint";
             button3.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // Select_Drivers_Panel
             // 
-            panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(button2);
-            panel1.Location = new Point(1145, 108);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(128, 120);
-            panel1.TabIndex = 16;
+            Select_Drivers_Panel.BorderStyle = BorderStyle.FixedSingle;
+            Select_Drivers_Panel.Controls.Add(Driver_Label);
+            Select_Drivers_Panel.Controls.Add(Driver_Panel);
+            Select_Drivers_Panel.Controls.Add(Select_Drivers_Panel_Close);
+            Select_Drivers_Panel.Location = new Point(1145, 108);
+            Select_Drivers_Panel.Name = "Select_Drivers_Panel";
+            Select_Drivers_Panel.Size = new Size(143, 140);
+            Select_Drivers_Panel.TabIndex = 16;
+            Select_Drivers_Panel.Visible = false;
             // 
-            // button2
+            // Driver_Label
             // 
-            button2.BackColor = Color.Lime;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Segoe UI", 5.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(103, 4);
-            button2.Name = "button2";
-            button2.Size = new Size(15, 15);
-            button2.TabIndex = 14;
-            button2.Text = "x";
-            button2.UseVisualStyleBackColor = false;
+            Driver_Label.AutoSize = true;
+            Driver_Label.Location = new Point(7, 6);
+            Driver_Label.Name = "Driver_Label";
+            Driver_Label.Size = new Size(83, 15);
+            Driver_Label.TabIndex = 16;
+            Driver_Label.Text = "Select Drivers :";
             // 
-            // radioButton1
+            // Driver_Panel
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(748, 83);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(94, 19);
-            radioButton1.TabIndex = 18;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "radioButton1";
-            radioButton1.UseVisualStyleBackColor = true;
+            Driver_Panel.AutoScroll = true;
+            Driver_Panel.Location = new Point(0, 29);
+            Driver_Panel.Name = "Driver_Panel";
+            Driver_Panel.Size = new Size(143, 110);
+            Driver_Panel.TabIndex = 15;
+            // 
+            // Select_Drivers_Panel_Close
+            // 
+            Select_Drivers_Panel_Close.BackColor = Color.Brown;
+            Select_Drivers_Panel_Close.FlatStyle = FlatStyle.Flat;
+            Select_Drivers_Panel_Close.Font = new Font("Segoe UI", 5.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Select_Drivers_Panel_Close.Location = new Point(123, 3);
+            Select_Drivers_Panel_Close.Name = "Select_Drivers_Panel_Close";
+            Select_Drivers_Panel_Close.Size = new Size(15, 15);
+            Select_Drivers_Panel_Close.TabIndex = 14;
+            Select_Drivers_Panel_Close.Text = "x";
+            Select_Drivers_Panel_Close.UseVisualStyleBackColor = false;
+            Select_Drivers_Panel_Close.Click += Select_Drivers_Panel_Close_Click;
             // 
             // Dashboard
             // 
@@ -430,8 +431,7 @@
             BackgroundImage = Properties.Resources.dashboardbackgroundv2;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1661, 724);
-            Controls.Add(panel1);
-            Controls.Add(radioButton1);
+            Controls.Add(Select_Drivers_Panel);
             Controls.Add(Settings_Panel);
             Controls.Add(Pause);
             Controls.Add(Resume);
@@ -457,7 +457,6 @@
             Resize += Dashboard_Resize;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             Test_Panel.ResumeLayout(false);
-            DashP.ResumeLayout(false);
             Graph_Panel.ResumeLayout(false);
             Layout_Picker.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Layout2).EndInit();
@@ -465,7 +464,8 @@
             ((System.ComponentModel.ISupportInitialize)Layout4).EndInit();
             ((System.ComponentModel.ISupportInitialize)Layout1).EndInit();
             Settings_Panel.ResumeLayout(false);
-            panel1.ResumeLayout(false);
+            Select_Drivers_Panel.ResumeLayout(false);
+            Select_Drivers_Panel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -500,9 +500,9 @@
         private Button Driver_Select;
         private Button Close_Settings;
         private Button button3;
-        private Panel panel1;
-        private CheckedListBox Selected_Drivers_Check;
-        private Button button2;
-        private RadioButton radioButton1;
+        private Panel Select_Drivers_Panel;
+        private Button Select_Drivers_Panel_Close;
+        private FlowLayoutPanel Driver_Panel;
+        private Label Driver_Label;
     }
 }
