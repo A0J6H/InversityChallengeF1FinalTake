@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace InversityF1.JsonObjs
 {
-    internal class Laps
+    public class Laps
     {
         public int meeting_key { get; set; }
         public int session_key { get; set; }
-        public int driver_number { get; set; }
+        public int? driver_number { get; set; }
         public int? i1_speed { get; set; }
         public int? i2_speed { get; set; }
         public int? st_speed { get; set; }
