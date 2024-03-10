@@ -300,6 +300,9 @@ namespace InversityChallenge
                 }
                 
             }
+            if (SC == 0) { SC = 1; }
+            if (MC == 0) { SC = 1; }
+            if (HC == 0) { SC = 1; }
             Stints.Add(new Stint(Soft / SC, "Soft"));//creates the instance and adds it to the list
             Stints.Add(new Stint(Medium / MC, "Medium"));
             Stints.Add(new Stint(Hard / HC, "Hard"));
@@ -1061,7 +1064,7 @@ namespace InversityChallenge
             Intervals = await GetIntervals($"https://api.openf1.org/v1/intervals?session_key={Selected_Session_Key}");//gets all of the intervals in the session
 
             Stints = await GetStint($"https://api.openf1.org/v1/stints?session_key={Selected_Session_Key}");//gets all of the Stints in the session
-            MessageBox.Show(Stints.Count().ToString());
+            
 
             for (int i = 0; i < Laps.Count; i++)
             {

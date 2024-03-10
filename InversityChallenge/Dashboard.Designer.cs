@@ -322,7 +322,6 @@
             Pause.Name = "Pause";
             Pause.Size = new Size(25, 25);
             Pause.TabIndex = 13;
-            Pause.Text = "button2";
             Pause.UseVisualStyleBackColor = true;
             Pause.Click += Pause_Click;
             // 
