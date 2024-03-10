@@ -140,23 +140,26 @@
             // Race_Start
             // 
             Race_Start.Enabled = false;
-            Race_Start.Location = new Point(1528, 46);
+            Race_Start.FlatStyle = FlatStyle.Flat;
+            Race_Start.ForeColor = Color.Blue;
+            Race_Start.Location = new Point(1519, 44);
             Race_Start.Margin = new Padding(3, 2, 3, 2);
             Race_Start.Name = "Race_Start";
-            Race_Start.Size = new Size(82, 22);
+            Race_Start.Size = new Size(98, 26);
             Race_Start.TabIndex = 6;
-            Race_Start.Text = "button1";
+            Race_Start.Text = "Lights Out";
             Race_Start.UseVisualStyleBackColor = true;
             Race_Start.Click += Race_Start_Click;
             // 
             // Layout_Button
             // 
-            Layout_Button.Location = new Point(1168, 45);
+            Layout_Button.FlatStyle = FlatStyle.Flat;
+            Layout_Button.Location = new Point(1141, 44);
             Layout_Button.Margin = new Padding(3, 2, 3, 2);
             Layout_Button.Name = "Layout_Button";
-            Layout_Button.Size = new Size(82, 22);
+            Layout_Button.Size = new Size(109, 27);
             Layout_Button.TabIndex = 7;
-            Layout_Button.Text = "Layout";
+            Layout_Button.Text = "Change Layout";
             Layout_Button.UseVisualStyleBackColor = true;
             Layout_Button.Click += Layout_Button_Click;
             // 
@@ -298,23 +301,26 @@
             // 
             // Resume
             // 
+            Resume.BackgroundImage = Properties.Resources.play_128;
+            Resume.BackgroundImageLayout = ImageLayout.Stretch;
             Resume.Enabled = false;
-            Resume.Location = new Point(223, 93);
+            Resume.Location = new Point(225, 90);
             Resume.Margin = new Padding(3, 2, 3, 2);
             Resume.Name = "Resume";
-            Resume.Size = new Size(27, 22);
+            Resume.Size = new Size(25, 25);
             Resume.TabIndex = 12;
-            Resume.Text = "button1";
             Resume.UseVisualStyleBackColor = true;
             Resume.Click += Resume_Click;
             // 
             // Pause
             // 
+            Pause.BackgroundImage = Properties.Resources.pause_128;
+            Pause.BackgroundImageLayout = ImageLayout.Stretch;
             Pause.Enabled = false;
-            Pause.Location = new Point(256, 93);
+            Pause.Location = new Point(256, 90);
             Pause.Margin = new Padding(3, 2, 3, 2);
             Pause.Name = "Pause";
-            Pause.Size = new Size(27, 22);
+            Pause.Size = new Size(25, 25);
             Pause.TabIndex = 13;
             Pause.Text = "button2";
             Pause.UseVisualStyleBackColor = true;

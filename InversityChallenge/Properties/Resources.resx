@@ -121,11 +121,11 @@
   <data name="mercedesf1logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mercedesf1logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="play-128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\play-128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="dashboardbackgroundv2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dashboardbackgroundv2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layout2b" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layout2b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Layout1b" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Layout1b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -133,10 +133,16 @@
   <data name="dashboardbackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dashboardbackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Layout3b" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layout3b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Layout2b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layout2b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Layout4b" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Layout4b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layout3b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layout3b1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pause-128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pause-128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
