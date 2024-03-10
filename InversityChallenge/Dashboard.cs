@@ -28,6 +28,7 @@ namespace InversityChallenge
         List<Sessions> Sessions;
         List<Drivers> Drivers;
         List<Intervals> Intervals;
+        List<Stints> Stints;
         List<List<Laps>> Laps = new List<List<Laps>>();
         List<List<Car_Data>> Car_Data = new List<List<Car_Data>>();
 
@@ -170,7 +171,139 @@ namespace InversityChallenge
             return Lap_Times;
         }
 
-        private void Update_Chart(int Index)
+        public class Speed
+        {
+            public string drivernumber { get; set; }
+            public double time { get; set; }
+            public double speed { get; set; }
+
+            public Speed(string Drivernumber, double Time, double Speed)
+            {
+                this.drivernumber = Drivernumber;
+                this.time = Time;
+                this.speed = Speed;
+            }
+        }
+
+        static List<List<Speed>> Speed_Chart(List<List<Car_Data>> Car_Data, List<List<Laps>> Lap_Info, int Current_Lap, List<string> Driver_Selection)
+        {
+            List<List<Speed>> Speeds = new List<List<Speed>>();
+            
+            for (int d = 0; d < Driver_Selection.Count; d++)
+            {
+                DateTime Start = new DateTime();
+                DateTime End = new DateTime();
+                List<Speed> Temp_Speeds = new List<Speed>();
+                int c = 0;
+                for(int k = 0;  k < Lap_Info.Count(); k++)
+                {
+                    for(int l = 0; l < Lap_Info[k].Count(); l++)
+                    {
+                        if (Driver_Selection[d] == Lap_Info[k][l].driver_number.ToString() && Current_Lap.ToString() == Lap_Info[k][l].lap_number.ToString())
+                        {
+                            
+                            Start = DateTime.Parse(Lap_Info[k][l].date_start.ToString());
+                            End = Start.AddMilliseconds(double.Parse(Lap_Info[k][l].lap_duration.ToString())*1000);
+                        }
+                    }
+                }
+
+                for(int i = 0; i < Car_Data.Count(); i++)
+                {
+                    for(int j = 0; j < Car_Data[i].Count(); j++)
+                    {
+                        if (Car_Data[i][j].driver_number.ToString() == Driver_Selection[d].ToString() && Car_Data[i][j].date>Start && Car_Data[i][j].date < End)
+                        {
+                            c++;
+                            Temp_Speeds.Add(new Speed(Car_Data[i][j].driver_number.ToString(),c, Car_Data[i][j].speed));
+                        }
+                    }
+                }
+
+                Speeds.Add(Temp_Speeds);
+            }
+            return Speeds;
+        }
+
+        public class Stint
+        {
+            public int laps { get; set; }
+            public string compound { get; set; }
+
+            public Stint(int Laps,string Compound)
+            {
+                this.laps = Laps;
+                this.compound = Compound;
+            }
+        }
+
+        static List<Stint> Stint_Chart(List<Stints> stints,int Current_Lap)
+        {
+            List<Stint> Stints = new List<Stint>();
+            int Soft = 0;
+            int SC = 0;
+            int Medium = 0;
+            int MC = 0;
+            int Hard = 0;
+            int HC = 0;
+            for(int i = 0; i < stints.Count; i++)
+            {
+                if (stints[i].lap_start > Current_Lap) { }
+                else
+                {
+                    string Compound = stints[i].compound;
+
+                    switch (Compound)
+                    {
+                        case "SOFT":
+                            if (stints[i].lap_end > Current_Lap) 
+                            {
+                                SC++;
+                                Soft += Current_Lap - stints[i].lap_start;
+                            }
+                            else
+                            {
+                                SC++;
+                                Soft += stints[i].lap_end - stints[i].lap_start;
+                            }
+                            break;
+                        case "MEDIUM":
+                            if (stints[i].lap_end > Current_Lap)
+                            {
+                                MC++;
+                                Medium += Current_Lap - stints[i].lap_start;
+                            }
+                            else
+                            {
+                                MC++;
+                                Medium += stints[i].lap_end - stints[i].lap_start;
+                            }
+                            break;
+                        case "HARD":
+                            if (stints[i].lap_end > Current_Lap)
+                            {
+                                HC++;
+                                Hard += Current_Lap - stints[i].lap_start;
+                            }
+                            else
+                            {
+                                HC++;
+                                Hard += stints[i].lap_end - stints[i].lap_start;
+                            }
+                            break;
+                    }
+                }
+                
+            }
+            Stints.Add(new Stint(Soft / SC, "Soft"));
+            Stints.Add(new Stint(Medium / MC, "Medium"));
+            Stints.Add(new Stint(Hard / HC, "Hard"));
+            return Stints;
+            
+        }
+
+
+            private void Update_Chart(int Index)
         {
             if (FlexCharts[Index][0].ChartType == ChartType.LineSymbols)
             {
@@ -183,6 +316,8 @@ namespace InversityChallenge
 
                     //Setting chart's Header and styling it
                     this.FlexCharts[Index][0].Header.Content = "Lap Times";
+                    this.FlexCharts[Index][0].AxisX.Title = "Lap Times (Seconds)";
+                    this.FlexCharts[Index][0].AxisY.Title = "Lap Number";
 
                     //Adding a Series to chart and binding it (AxisY) to 'Revenue' field of DataCollection
                     for (int j = 0; j < Lap_Time_Chart(Laps, Current_Lap, Selected_Drivers[Index]).Count(); j++)
@@ -206,7 +341,65 @@ namespace InversityChallenge
                 }
                 else if (Data_Types[Index][0] == "Speed")
                 {
+                    FlexCharts[Index][0].Series.Clear();
 
+                    //Selecting chart's type 
+                    this.FlexCharts[Index][0].ChartType = C1.Chart.ChartType.LineSymbols;
+
+                    //Setting chart's Header and styling it
+                    this.FlexCharts[Index][0].Header.Content = "Car Speed";
+                    this.FlexCharts[Index][0].AxisX.Title = "Car Speed (km)";
+                    this.FlexCharts[Index][0].AxisY.Title = "Data Points";
+
+                    //Adding a Series to chart and binding it (AxisY) to 'Revenue' field of DataCollection
+                    for (int j = 0; j < Speed_Chart(Car_Data,Laps,Current_Lap, Selected_Drivers[Index]).Count(); j++)
+                    {
+                        C1.Win.Chart.Series series = new C1.Win.Chart.Series();
+                        series.DataSource = Speed_Chart(Car_Data, Laps, Current_Lap, Selected_Drivers[Index])[j];
+                        series.Name = $"{Speed_Chart(Car_Data, Laps, Current_Lap, Selected_Drivers[Index])[j][0].drivernumber}";
+                        series.Binding = "speed";
+                        series.ChartType = C1.Chart.ChartType.LineSymbols;
+                        FlexCharts[Index][0].Series.Add(series);
+                    }
+
+                    //this.FlexCharts[i].Series.Add(new C1.Win.Chart.Series
+                    //{
+                    //Name property specifies the string to be displayed corresponding to this Series in Legend
+                    //    Name = "LapTimes",
+                    //    Binding = "laptime"
+                    //});
+                    //Binding chart's AxisX to 'Date' so Dates are shown in Horizontal axis
+                    this.FlexCharts[Index][0].BindingX = "time";
+                }
+            }
+            else if(FlexCharts[Index][0].ChartType == ChartType.Bar)
+            {
+                if (Data_Types[Index][0] == "Tyre_Comp")
+                {
+                    FlexCharts[Index][0].DataSource = Stint_Chart(Stints, Current_Lap);
+
+                    FlexCharts[Index][0].Series.Clear();
+
+                    //Selecting chart's type 
+                    this.FlexCharts[Index][0].ChartType = C1.Chart.ChartType.Bar;
+
+                    //Setting chart's Header and styling it
+                    this.FlexCharts[Index][0].Header.Content = "Tyre Degridation";
+                    this.FlexCharts[Index][0].AxisX.Title = "Average Laps";
+                    this.FlexCharts[Index][0].AxisY.Title = "Tyre Compounds";
+                    //Adding a Series to chart and binding it (AxisY) to 'Revenue' field of DataCollection
+
+
+                    this.FlexCharts[Index][0].Series.Add(new C1.Win.Chart.Series
+                    {
+                    //Name property specifies the string to be displayed corresponding to this Series in Legend
+                        Name = "Average Laps",
+                        Binding = "laps"
+                    });
+                    //Binding chart's AxisX to 'Date' so Dates are shown in Horizontal axis
+                    this.FlexCharts[Index][0].BindingX = "compound";
+
+                    
                 }
             }
         }
@@ -454,6 +647,7 @@ namespace InversityChallenge
             Graph_Panel.Location = new Point(30, 5);
             Graph_Panel.Visible = true;
             panel.Controls.Add(Graph_Panel);
+            Graph_Panel.BringToFront();
 
         }
 
@@ -674,6 +868,25 @@ namespace InversityChallenge
             }
         }
 
+        public async Task<List<Stints>> GetStint(string uri)//Function that Calls to the API to get all the drivers in the session
+        {//gets all of the driver data and then adds it into the list
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(uri)
+            };
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Stints>>(body);//Decerialize the String into Json 
+            }
+        }
+
+
+
 
         private async void Dashboard_Load(object sender, EventArgs e)//Dashboard inital loading
         //This function is mainly used to open everything that the software needs for the user
@@ -833,6 +1046,8 @@ namespace InversityChallenge
             MessageBox.Show($"{Selected_Session_Key}");
             Intervals = await GetIntervals($"https://api.openf1.org/v1/intervals?session_key={Selected_Session_Key}");
 
+            Stints = await GetStint($"https://api.openf1.org/v1/stints?session_key={Selected_Session_Key}");
+            MessageBox.Show(Stints.Count().ToString());
 
             for (int i = 0; i < Laps.Count; i++)
             {
@@ -850,10 +1065,14 @@ namespace InversityChallenge
                 panel.Controls.Add(Add_Driver_Button(Drivers[i].driver_number.ToString()));
                 Driver_Panel.Controls.Add(panel);
             }
-            for(int i = 0;i < Laps.Count; i++)
+            List<Car_Data> Temp_Car_Data = new List<Car_Data>();
+            for (int i = 0;i < Drivers.Count; i++)
             {
-
+                Temp_Car_Data = await GetCar_Data($"https://api.openf1.org/v1/car_data?session_key={Selected_Session_Key}&speed>0&driver_number={Drivers[i].driver_number}");
+                Car_Data.Add( Temp_Car_Data );
             }
+            
+
         }
 
         private void Race_Timer_Tick(object sender, EventArgs e)
@@ -933,19 +1152,49 @@ namespace InversityChallenge
             Panel Area = Line_Graph.Parent.Parent as Panel;
             int Width = Area.Width;
             int Height = Area.Height;
-            C1.Win.Chart.FlexChart Line_Chart = new C1.Win.Chart.FlexChart();
-            Line_Chart.Width = Width - 55;
-            Line_Chart.Height = Height - 20;
-            Line_Chart.Location = new Point(30, 10);
-            Line_Chart.ChartType = ChartType.LineSymbols;
-            FlexCharts[int.Parse(Area.Name)].Add(Line_Chart);
-            Area.Controls.Add(Line_Chart);
+            C1.Win.Chart.FlexChart Chart = new C1.Win.Chart.FlexChart();
+            Chart.Width = Width - 55;
+            Chart.Height = Height - 20;
+            Chart.Location = new Point(30, 10);
+            Chart.ChartType = ChartType.LineSymbols;
+            if (FlexCharts[int.Parse(Area.Name)].Count() == 1)
+            {
+                C1.Win.Chart.FlexChart Old_Chart = FlexCharts[int.Parse(Area.Name)][0];
+                Old_Chart.Dispose();
+                FlexCharts[int.Parse(Area.Name)].Clear();
+                FlexCharts[int.Parse(Area.Name)].Add(Chart);
+            }
+            else
+            {
+                FlexCharts[int.Parse(Area.Name)].Add(Chart);
+            }
+            Area.Controls.Add(Chart);
 
         }
 
         private void Bar_Chart_Click(object sender, EventArgs e)
         {
-
+            Panel Area = Line_Graph.Parent.Parent as Panel;
+            int Width = Area.Width;
+            int Height = Area.Height;
+            C1.Win.Chart.FlexChart Chart = new C1.Win.Chart.FlexChart();
+            Chart.Width = Width - 55;
+            Chart.Height = Height - 20;
+            Chart.Location = new Point(30, 10);
+            Chart.ChartType = ChartType.Bar;
+            
+            if(FlexCharts[int.Parse(Area.Name)].Count() ==1) 
+            {
+                C1.Win.Chart.FlexChart Old_Chart = FlexCharts[int.Parse(Area.Name)][0] ;
+                Old_Chart.Dispose();
+                FlexCharts[int.Parse(Area.Name)].Clear();
+                FlexCharts[int.Parse(Area.Name)].Add(Chart);
+            }
+            else
+            {
+                FlexCharts[int.Parse(Area.Name)].Add(Chart);
+            }
+            Area.Controls.Add(Chart);
         }
 
         private void Pie_Chart_Click(object sender, EventArgs e)

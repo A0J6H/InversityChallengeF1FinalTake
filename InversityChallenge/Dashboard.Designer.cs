@@ -200,6 +200,7 @@
             // 
             // Pie_Chart
             // 
+            Pie_Chart.Enabled = false;
             Pie_Chart.Location = new Point(3, 60);
             Pie_Chart.Name = "Pie_Chart";
             Pie_Chart.Size = new Size(93, 23);
