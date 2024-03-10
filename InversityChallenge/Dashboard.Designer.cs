@@ -32,8 +32,6 @@
             Race_Select = new ComboBox();
             label1 = new Label();
             pictureBox1 = new PictureBox();
-            Test_Panel = new Panel();
-            Choose_Graph = new Button();
             DashP = new Panel();
             Session_Select = new ComboBox();
             Race_Timer = new System.Windows.Forms.Timer(components);
@@ -56,13 +54,16 @@
             Settings_Panel = new Panel();
             Driver_Select = new Button();
             Close_Settings = new Button();
-            button3 = new Button();
+            Data_Select = new Button();
             Select_Drivers_Panel = new Panel();
             Driver_Label = new Label();
             Driver_Panel = new FlowLayoutPanel();
             Select_Drivers_Panel_Close = new Button();
+            Select_Data_Panel = new Panel();
+            label2 = new Label();
+            Data_Panel = new FlowLayoutPanel();
+            Select_Data_Panel_Close = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            Test_Panel.SuspendLayout();
             Graph_Panel.SuspendLayout();
             Layout_Picker.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Layout2).BeginInit();
@@ -71,6 +72,7 @@
             ((System.ComponentModel.ISupportInitialize)Layout1).BeginInit();
             Settings_Panel.SuspendLayout();
             Select_Drivers_Panel.SuspendLayout();
+            Select_Data_Panel.SuspendLayout();
             SuspendLayout();
             // 
             // Race_Select
@@ -107,27 +109,6 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
-            // 
-            // Test_Panel
-            // 
-            Test_Panel.BorderStyle = BorderStyle.FixedSingle;
-            Test_Panel.Controls.Add(Choose_Graph);
-            Test_Panel.Location = new Point(367, 658);
-            Test_Panel.Margin = new Padding(3, 2, 3, 2);
-            Test_Panel.Name = "Test_Panel";
-            Test_Panel.Size = new Size(613, 300);
-            Test_Panel.TabIndex = 0;
-            // 
-            // Choose_Graph
-            // 
-            Choose_Graph.Location = new Point(3, 2);
-            Choose_Graph.Margin = new Padding(3, 2, 3, 2);
-            Choose_Graph.Name = "Choose_Graph";
-            Choose_Graph.Size = new Size(31, 22);
-            Choose_Graph.TabIndex = 0;
-            Choose_Graph.Text = "+";
-            Choose_Graph.UseVisualStyleBackColor = true;
-            Choose_Graph.Click += Choose_Graph_Click;
             // 
             // DashP
             // 
@@ -343,7 +324,7 @@
             Settings_Panel.BorderStyle = BorderStyle.FixedSingle;
             Settings_Panel.Controls.Add(Driver_Select);
             Settings_Panel.Controls.Add(Close_Settings);
-            Settings_Panel.Controls.Add(button3);
+            Settings_Panel.Controls.Add(Data_Select);
             Settings_Panel.Location = new Point(1038, 108);
             Settings_Panel.Name = "Settings_Panel";
             Settings_Panel.Size = new Size(101, 62);
@@ -373,14 +354,15 @@
             Close_Settings.UseVisualStyleBackColor = false;
             Close_Settings.Click += Close_Settings_Click;
             // 
-            // button3
+            // Data_Select
             // 
-            button3.Location = new Point(3, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(73, 23);
-            button3.TabIndex = 1;
-            button3.Text = "DataPoint";
-            button3.UseVisualStyleBackColor = true;
+            Data_Select.Location = new Point(3, 4);
+            Data_Select.Name = "Data_Select";
+            Data_Select.Size = new Size(73, 23);
+            Data_Select.TabIndex = 1;
+            Data_Select.Text = "DataPoints";
+            Data_Select.UseVisualStyleBackColor = true;
+            Data_Select.Click += Data_Select_Click;
             // 
             // Select_Drivers_Panel
             // 
@@ -424,6 +406,48 @@
             Select_Drivers_Panel_Close.UseVisualStyleBackColor = false;
             Select_Drivers_Panel_Close.Click += Select_Drivers_Panel_Close_Click;
             // 
+            // Select_Data_Panel
+            // 
+            Select_Data_Panel.BorderStyle = BorderStyle.FixedSingle;
+            Select_Data_Panel.Controls.Add(label2);
+            Select_Data_Panel.Controls.Add(Data_Panel);
+            Select_Data_Panel.Controls.Add(Select_Data_Panel_Close);
+            Select_Data_Panel.Location = new Point(889, 108);
+            Select_Data_Panel.Name = "Select_Data_Panel";
+            Select_Data_Panel.Size = new Size(143, 140);
+            Select_Data_Panel.TabIndex = 17;
+            Select_Data_Panel.Visible = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(7, 6);
+            label2.Name = "label2";
+            label2.Size = new Size(71, 15);
+            label2.TabIndex = 16;
+            label2.Text = "Select Data :";
+            // 
+            // Data_Panel
+            // 
+            Data_Panel.AutoScroll = true;
+            Data_Panel.Location = new Point(0, 29);
+            Data_Panel.Name = "Data_Panel";
+            Data_Panel.Size = new Size(143, 110);
+            Data_Panel.TabIndex = 15;
+            // 
+            // Select_Data_Panel_Close
+            // 
+            Select_Data_Panel_Close.BackColor = Color.Brown;
+            Select_Data_Panel_Close.FlatStyle = FlatStyle.Flat;
+            Select_Data_Panel_Close.Font = new Font("Segoe UI", 5.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Select_Data_Panel_Close.Location = new Point(123, 3);
+            Select_Data_Panel_Close.Name = "Select_Data_Panel_Close";
+            Select_Data_Panel_Close.Size = new Size(15, 15);
+            Select_Data_Panel_Close.TabIndex = 14;
+            Select_Data_Panel_Close.Text = "x";
+            Select_Data_Panel_Close.UseVisualStyleBackColor = false;
+            Select_Data_Panel_Close.Click += Select_Data_Panel_Close_Click;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -431,13 +455,13 @@
             BackgroundImage = Properties.Resources.dashboardbackgroundv2;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1661, 724);
+            Controls.Add(Select_Data_Panel);
             Controls.Add(Select_Drivers_Panel);
             Controls.Add(Settings_Panel);
             Controls.Add(Pause);
             Controls.Add(Resume);
             Controls.Add(Lap_Counter);
             Controls.Add(LeaderboardPanel);
-            Controls.Add(Test_Panel);
             Controls.Add(Layout_Picker);
             Controls.Add(Graph_Panel);
             Controls.Add(Race_Start);
@@ -456,7 +480,6 @@
             Load += Dashboard_Load;
             Resize += Dashboard_Resize;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            Test_Panel.ResumeLayout(false);
             Graph_Panel.ResumeLayout(false);
             Layout_Picker.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Layout2).EndInit();
@@ -466,6 +489,8 @@
             Settings_Panel.ResumeLayout(false);
             Select_Drivers_Panel.ResumeLayout(false);
             Select_Drivers_Panel.PerformLayout();
+            Select_Data_Panel.ResumeLayout(false);
+            Select_Data_Panel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -480,8 +505,6 @@
         private System.Windows.Forms.Timer Race_Timer;
         private Button Race_Start;
         private Button Layout_Button;
-        private Panel Test_Panel;
-        private Button Choose_Graph;
         private Panel Graph_Panel;
         private Button Bar_Chart;
         private Button Pie_Chart;
@@ -499,10 +522,14 @@
         private Panel Settings_Panel;
         private Button Driver_Select;
         private Button Close_Settings;
-        private Button button3;
+        private Button Data_Select;
         private Panel Select_Drivers_Panel;
         private Button Select_Drivers_Panel_Close;
         private FlowLayoutPanel Driver_Panel;
         private Label Driver_Label;
+        private Panel Select_Data_Panel;
+        private Label label2;
+        private FlowLayoutPanel Data_Panel;
+        private Button Select_Data_Panel_Close;
     }
 }
