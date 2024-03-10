@@ -21,6 +21,9 @@ Open the app and download the Windows Forms Section and thats it.
 ![image](https://github.com/A0J6H/InversityChallengeF1FinalTake/assets/84044066/e1af9083-006c-4d2a-b718-a0a3cfeb44d7)
 
 ScreenShots :
+
 ![image 2](https://github.com/A0J6H/InversityChallengeF1FinalTake/assets/84044066/91d25b09-291b-4e01-a668-caac8d247722)
+
+
 This shows how the program looks once you run it and add some charts to the custom layout, that can change to suit your needs!
 
